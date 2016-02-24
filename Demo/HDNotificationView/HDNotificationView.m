@@ -119,8 +119,33 @@
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(notificationViewDidTap:)];
     [self addGestureRecognizer:tapGesture];
+    
+    /// Add Swipe Up Gesture for dismiss
+  UISwipeGestureRecognizer  *gestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
+    [gestureRecognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
+    [self addGestureRecognizer:gestureRecognizer];
+    
+    
 }
-
+-(void)swipeHandler:(UISwipeGestureRecognizer *)recognizer {
+    NSLog(@"Swipe received.");
+    
+    
+    /// Showing animation
+    [UIView animateWithDuration:NOTIFICATION_VIEW_SHOWING_ANIMATION_TIME
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         
+                         CGRect frame = self.frame;
+                         frame.origin.y = -frame.size.height;
+                         self.frame = frame;
+                         
+                     } completion:^(BOOL finished) {
+                         
+                     }];
+   
+}
 - (void)showNotificationViewWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message isAutoHide:(BOOL)isAutoHide onTouch:(void (^)())onTouch
 {
     /// Invalidate _timerHideAuto
